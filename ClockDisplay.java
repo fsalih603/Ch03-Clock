@@ -1,18 +1,19 @@
 
 /**
- * THIS IS THE MAIN BRANCH - MAKE NO CHANGES HERE 
+ * THIS IS THE 24Hour Branch 
  * 
  * The ClockDisplay class implements a digital clock display for a
- * European-style 24 hour clock. The clock shows hours and minutes. The 
- * range of the clock is 00:00 (midnight) to 23:59 (one minute before 
- * midnight).
+ * American-style 24 hour clock. The hours are stored as 00-23.
+ * The clock shows hours and minutes. The 
+ * range of the clock is 12:00 AM (midnight) to 11:59 AM (one minute before 
+ * Noon) and 12:00 PM (noon) to 11:59 PM (one minute before midnight).
  * 
  * The clock display receives "ticks" (via the timeTick method) every minute
  * and reacts by incrementing the display. This is done in the usual clock
  * fashion: the hour increments when the minutes roll over to zero.
  * 
- * @author Michael Kölling and David J. Barnes
- * @version 2016.02.29
+ * @author Fatimah Salih
+ * @version 09-28-26
  */
 public class ClockDisplay
 {
