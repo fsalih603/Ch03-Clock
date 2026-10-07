@@ -1,6 +1,6 @@
 
 /**
- * THIS IS THE 12 Hour BRANCH  
+ * THIS IS THE 12 HOUR BRANCH  
  * 
  * The ClockDisplay class implements a digital clock display for a
  * American-style 24 hour clock. The clock shows hours and minutes. Hours 
@@ -20,15 +20,18 @@ public class ClockDisplay
     private NumberDisplay hours;
     private NumberDisplay minutes;
     private String displayString;    // simulates the actual display
+    private String meridian;        // Display "AM" or "PM"
     
     /**
      * Constructor for ClockDisplay objects. This constructor 
-     * creates a new clock set at 00:00.
+     * creates a new clock set at 12:00 AM.
      */
     public ClockDisplay()
     {
-        hours = new NumberDisplay(24);
+        hours = new NumberDisplay(13);
         minutes = new NumberDisplay(60);
+        hours.setValue(12);
+        meridian = "AM";
         updateDisplay();
     }
 
@@ -36,12 +39,14 @@ public class ClockDisplay
      * Constructor for ClockDisplay objects. This constructor
      * creates a new clock set at the time specified by the 
      * parameters.
+     * The hour is 1-12 and meridian is "AM" or "PM".
      */
-    public ClockDisplay(int hour, int minute)
+    public ClockDisplay(int hour, int minute, String meridian)
     {
-        hours = new NumberDisplay(24);
+        hours = new NumberDisplay(13);
         minutes = new NumberDisplay(60);
-        setTime(hour, minute);
+        this.meridian = "AM";
+        setTime(hour, minute, meridian);
     }
 
     /**
@@ -52,20 +57,56 @@ public class ClockDisplay
     {
         minutes.increment();
         if(minutes.getValue() == 0) {  // it just rolled over!
-            hours.increment();
+            incrementHour();
         }
         updateDisplay();
     }
 
     /**
-     * Set the time of the display to the specified hour and
+     * Move the hour forward according to the 12-hours
+     *
+     */
+    private void incrementHour()
+    {
+        int current = hours.getValue();
+        if(current == 11) {
+            hours.setValue(12);
+            toggleMeridian(); 
+        }
+        else if(current == 12) {
+            hours.setValue(1);
+        }
+        else {
+            hours.increment();
+        }
+    }
+    /*
+     * Go between AM and PM
+     */
+    private void toggleMeridian()
+    {
+        if(meridian.equals("AM")) {
+            meridian = "PM";
+        }
+        else {
+            meridian ="AM";
+        }
+    }
+    
+    /**
+     * Set the time of the display to the specified hour, meridian, and
      * minute.
      */
-    public void setTime(int hour, int minute)
+    public void setTime(int hour, int minute, String meridian)
     {
-        hours.setValue(hour);
-        minutes.setValue(minute);
-        updateDisplay();
+        if(hour >= 1 && hour <= 12 &&
+        (meridian.equalsIgnoreCase("AM") || meridian.equalsIgnoreCase("PM"))) {
+            hours.setValue(hour);
+            minutes.setValue(minute);
+            this.meridian = meridian.toUpperCase();
+            updateDisplay();
+        
+        }
     }
 
     /**
@@ -82,6 +123,6 @@ public class ClockDisplay
     private void updateDisplay()
     {
         displayString = hours.getDisplayValue() + ":" + 
-                        minutes.getDisplayValue();
+                        minutes.getDisplayValue() + " " + meridian;
     }
 }
