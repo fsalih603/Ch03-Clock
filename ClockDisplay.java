@@ -3,7 +3,7 @@
  * THIS IS THE 24Hour Branch 
  * 
  * The ClockDisplay class implements a digital clock display for a
- * American-style 24 hour clock. The hours are stored as 00-23.
+ * American-style 24 hour clock. Internally the hours are stored as 00-23.
  * The clock shows hours and minutes. The 
  * range of the clock is 12:00 AM (midnight) to 11:59 AM (one minute before 
  * Noon) and 12:00 PM (noon) to 11:59 PM (one minute before midnight).
@@ -69,7 +69,7 @@ public class ClockDisplay
     }
 
     /**
-     * Return the current time of this display in the format HH:MM.
+     * Return the current time of this display in the format HH:MM AM/PM.
      */
     public String getTime()
     {
@@ -78,10 +78,28 @@ public class ClockDisplay
     
     /**
      * Update the internal string that represents the display.
+     * The interna; 0-23 hour is converted to 1-12 adding AM/PM only for
+     * the display.
      */
     private void updateDisplay()
     {
-        displayString = hours.getDisplayValue() + ":" + 
-                        minutes.getDisplayValue();
+        int hour = hours.getValue();
+        String meridian;
+        
+        if(hour < 12) {
+            meridian = "AM";
+        }
+        else {
+            meridian = "PM";
+        }
+        
+        if(hour == 0) {
+            hour = 12;
+        }
+        else if (hour > 12) {
+            hour = hour - 12;
+        }
+        displayString = hour + ":" + minutes.getDisplayValue() + " " +
+        meridian;
     }
 }
